@@ -12,11 +12,14 @@ def replace(pattern, substitution, filename):
         f.truncate()
 
 def generate_org_roam_header(file_path, tags):
-    """Generate Org-roam file header with a unique ID, title, and tags."""
+    """Generate Org-roam file header with a unique ID and title."""
     title = os.path.splitext(os.path.basename(file_path))[0]
     unique_id = str(uuid.uuid4())
-    tags_line = f"#+filetags: {tags}" if tags else "#+filetags:"
-    header = f"#+title: {title}\n{tags_line}\n#+roam_aliases: \n#+id: {unique_id}\n\n"
+    header = (
+        f":PROPERTIES:\n:ID: {unique_id}\n:END:\n"
+        f"#+title: {title}\n"
+        f"#+ROAM_TAGS: {tags if tags else ''}\n\n"
+    )
     return header
 
 def extract_and_convert_tags(content):
@@ -104,4 +107,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
